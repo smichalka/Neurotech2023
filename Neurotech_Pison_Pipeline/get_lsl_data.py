@@ -30,17 +30,13 @@ class PyLSLWrapper:
         print('Launched listener!')
         
         inlet = StreamInlet(to_pull)
-        try:
-            while self.run_thread:
-                try:
-                    sample, timestamp = inlet.pull_sample(timeout=timeout_set)
-                    data_arr.append([timestamp]+sample)
-                except:
-                    raise ValueError('Stream has empty values! Check the app')
-                    continue
-        except: # see if there's a timeout error that can occur
-            inlet.close_stream()
-            raise Exception("LSL Stream was lost while pulling data. Try connecting to device again.")
+        while self.run_thread:
+            try:
+                sample, timestamp = inlet.pull_sample(timeout=timeout_set)
+                data_arr.append([timestamp]+sample)
+            except:
+                raise ValueError('Stream has empty values! Check the app')
+                continue
         inlet.close_stream()
         print('Ending stream listener')
 
@@ -66,7 +62,7 @@ class PyLSLWrapper:
             # self.marker_outlet = StreamOutlet(marker_info)
             # self.marker_outlet.push_sample([-100])
             # marker_inlet = StreamInlet(marker_info)
-            self.listener_thread = threading.Thread(target=self.pull_stream, args=(to_pull,self.lsl_data,0.1)) 
+            self.listener_thread = threading.Thread(target=self.pull_stream, args=(to_pull,self.lsl_data,1.0)) 
             # self.marker_thread = threading.Thread(target=self.pull_stream, args=(marker_info, self.marker_data,0.5))
             self.run_thread = True
             self.listener_thread.start()
