@@ -13,8 +13,8 @@ function data = processData(lsl_mat)
         % if index is not in markerNos
         if sum(markerNos==data)==0
             markerNos(end+1) = data;
-            starts(end+1) = marker_data(i, 1)
-            ends(end+1) = curr_end
+            starts(end+1) = marker_data(i, 1);
+            ends(end+1) = curr_end;
         end
         i = i - 1;
     end
