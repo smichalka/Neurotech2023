@@ -8,8 +8,27 @@ function [epochedData,gest_list] = epochFromMarkersToLabels(lsl_data,marker_data
 %   gest_list: list of the gestures (just use this to make sure lengths are
 %   the same
 
+
+
+% Find all markers that indicate a rerecording and delete them
+bad_marker = 99; % This is the marker number to indicate the trial was re-recorded due to error
+% This is list of any markers that indicate a bad marker
+idx_bad_markers = find(marker_data(:,2)~=bad_marker);
+% Make list to include this index and the prior index (where the actual
+% trial starts)
+idx_bad_markers = [idx_bad_markers; (idx_bad_markers-1)];
+if min(idx_bad_markers) < 1
+    warning('Getting bad marker as first marker. Look at data for dropped markers')
+    idx_bad_markers(idx_bad_markers<=0) = 1; % 
+end
+% Remove all bad markers and their trials from the marker data
+marker_data(idx_bad_markers) = [];
+
+
 % Find the Marker onset for all non-zero markers
 start_times = marker_data(marker_data(:,2)~=0,1);
+
+
 % Check to make sure the number of markers matches the number of trials
 if length(start_times) ~= length(gest_list)
     warning("Number of markers does not match the gest_list. Please look at start_times code.")
