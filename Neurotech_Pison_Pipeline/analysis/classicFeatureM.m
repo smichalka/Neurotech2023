@@ -39,7 +39,7 @@ end
 %% Realign the data and crop
 
 % Set the number to 1400 for all data without realignment.
-dataChTimeTr = alignToOnsetAndCrop(epochedData,200);
+dataChTimeTr = alignToOnsetAndCrop(epochedData,500);
 
 
 label_names = unique(labels)
@@ -50,7 +50,7 @@ figure;
 colors = {'b','r','g'};
 for ch = 1:numCh
     subplot(numCh,1,ch);
-    for l = 1:length(label_names)
+    for l = [2 3 1]%1:length(label_names)
         plot(squeeze(dataChTimeTr(ch,:,tr(labels(tr)==label_names(l)))),colors{l}); hold on
     end
     title(strcat('Ch ',num2str(ch)));
@@ -63,13 +63,13 @@ allFeatureNames = {'bp2t20','bp20t40','bp40t56','bp64t80' ,'bp80t110','bp110t250
 'np'};
 %% Choose features to include in feature extraction
 %includedfeatures = {'bp80t110'};
-%extractedFeatureNames = allFeatureNames([1,2,3,4,5,6,7])
-extractedFeatureNames = allFeatureNames;
+extractedFeatureNames = allFeatureNames([1,2,3,4,5,6,7])
+%extractedFeatureNames = allFeatureNames;
 
 % Put extracted features into a structure
-featureData = extractClassicEMG(dataChTimeTr,extractedFeatureNames,[1 200],50);
+featureData = extractClassicEMG(dataChTimeTr,extractedFeatureNames,[1 500],250);
 
-numTWs = 4; %number of time windows (window size / bin size above)
+numTWs = 2; %number of time windows (window size / bin size above)
 
 %% Plot selected features
 % Plot first 25 features
@@ -77,9 +77,9 @@ numTWs = 4; %number of time windows (window size / bin size above)
 for tw = 1:numTWs
     figure
     pl=1;
-    for i = 1:25 %length(featureData.Properties.VariableNames)
+    for i = 1:50 %length(featureData.Properties.VariableNames)
         %tempfeat = eval(strcat('featureData.',extractedFeatureNames{i},'(:,',num2str(tw),')'));
-        subplot(5,5,pl)
+        subplot(5,10,pl)
         
         histogram(featureData{labels==1,i},20,"Normalization","probability"); hold on
         histogram(featureData{labels==2,i},20,"Normalization","probability");
