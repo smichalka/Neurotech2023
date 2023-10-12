@@ -72,6 +72,8 @@ class PyLSLWrapper:
                 print('LSL Stream found!')
             if stream.name() == f'Pison Vulcan - {self.device_name} IMU':
                 to_pull_IMU = stream
+            elif stream.name() == f'Pison SALUS - {self.device_name} IMU':
+                to_pull_IMU = stream
         if not to_pull:
             raise Exception('Could not find the LSL stream')
         else:
