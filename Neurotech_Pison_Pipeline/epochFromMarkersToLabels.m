@@ -29,13 +29,14 @@ if size(idx_bad_markers,1) > 0
 end
 
 
+
 % Find the Marker onset for all non-zero markers
 start_times = marker_data(marker_data(:,2)~=0,1);
 
 
 % Check to make sure the number of markers matches the number of trials
 if length(start_times) ~= length(gest_list)
-    warning("Number of markers does not match the gest_list. Please look at start_times code.")
+    input("Number of markers does not match the gest_list. Please look at start_times code.")
 end
     
 % Empty data: channels x timepoints x trials
