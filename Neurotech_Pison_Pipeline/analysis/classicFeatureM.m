@@ -200,6 +200,7 @@ end
 validationPredictions = categorical(validationPredictions);
 
 accuracy_training_crossval = sum(validationPredictions==y_train)./length(validationPredictions)
+figure;
 confchart_training_crosval = confusionchart(y_train,validationPredictions);
 title("Cross-validation data confusion chart")
 
@@ -213,6 +214,6 @@ predictions_test = classificationModel.predict(X_test(:,idx_feats2keep));
 predictions_test = categorical(predictions_test);
 
 accuracy_training_crossval = sum(predictions_test==y_test)./length(predictions_test)
-
+figure;
 confchart_training_crosval = confusionchart(y_test,predictions_test);
 title("Test data confusion chart")
