@@ -63,10 +63,16 @@ class PyLSLWrapper:
         print(streams)
         for stream in streams:
             print(f'Pison Vulcan - {self.device_name} ADC')
+            # New devide name is SALUS
             if stream.name() == f'Pison Vulcan - {self.device_name} ADC':
                 to_pull = stream
                 print('LSL Stream found!')
+            elif stream.name() == f'Pison SALUS - {self.device_name} ADC':
+                to_pull = stream
+                print('LSL Stream found!')
             if stream.name() == f'Pison Vulcan - {self.device_name} IMU':
+                to_pull_IMU = stream
+            elif stream.name() == f'Pison SALUS - {self.device_name} IMU':
                 to_pull_IMU = stream
         if not to_pull:
             raise Exception('Could not find the LSL stream')

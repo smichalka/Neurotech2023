@@ -15,7 +15,22 @@ PyLSL is the communication protocol used to stream data from the device to the c
 
 **Windows**
 
-To install pylsl on windows, simply run `pip install pylsl`. This will install the python package and all backend libraries needed. 
+You'll also need version 3.9, 3.10, or 3.11 of python that is not the Windows default install version (but instead one downloaded from Python directly or a repository that still supplies a binary for what you need: https://github.com/adang1345/PythonWindows/blob/master/3.10.12/python-3.10.12-amd64-full.exe).
+
+You'll need to make sure that this version of python is on your path above other version of python. You can do this by opening up the environmental variables in windows (type it into the search). Click on the button to edit them. Select the systems (or personal) PATH variable and edit it. Add two new paths:one to wherever python is installed and one to that installation folder followed by \Scripts\
+
+Then you may also need to set your python version in matlab:
+pyversion('C:\Users\YOUR_USER_NAME\AppData\Local\Programs\Python\Python310\python.exe')
+or a path to wherever you installed this new python.
+You can check that this is correct from the Matlab command window by:
+!python -V
+Then, you can install pylsl from the same Matlab command window by:
+!python -m pip install pylsl
+You may also need to install other dependencies for this version:
+!python -m pip install scipy
+!python -m pip install numpy
+
+More generally (and if you already have a non-default Windows python installed), you can install pylsl on windows, by simply running `pip install pylsl`. This will install the python package and all backend libraries needed. 
 
 **Linux/MacOS**
 
