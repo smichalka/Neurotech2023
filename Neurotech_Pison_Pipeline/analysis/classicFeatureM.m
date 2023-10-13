@@ -9,8 +9,8 @@ labels = [];
 % i is which folders you want to load from.
 for i = 1:6
     % load the gesturelist and data
-    load(strcat("gestures/gest_",num2str(i),"/gestures.mat"));
-    gest_data_name = dir(strcat("gestures/gest_",num2str(i),"/lsl_data*.mat"));
+    load(strcat("../../../SSVEP/gestures/gest_",num2str(i),"/gestures.mat"));
+    gest_data_name = dir(strcat("../../../SSVEP/gestures/gest_",num2str(i),"/lsl_data*.mat"));
     load(fullfile(gest_data_name.folder,gest_data_name.name))
     %gest_data = processData(fullfile(gest_data_name.folder,gest_data_name.name));
 
@@ -39,7 +39,7 @@ end
 %% Realign the data and crop
 
 % Set the number to 1400 for all data without realignment.
-dataChTimeTr = alignToOnsetAndCrop(epochedData,500);
+dataChTimeTr = alignToOnsetAndCrop(epochedData,1400);
 
 
 label_names = unique(labels)
@@ -63,11 +63,12 @@ allFeatureNames = {'bp2t20','bp20t40','bp40t56','bp64t80' ,'bp80t110','bp110t250
 'np'};
 %% Choose features to include in feature extraction
 %includedfeatures = {'bp80t110'};
-extractedFeatureNames = allFeatureNames([1,2,3,4,5,6,7])
+extractedFeatureNames = {'var'};
+%extractedFeatureNames = allFeatureNames([1,2,3,4,5,6,7])
 %extractedFeatureNames = allFeatureNames;
 
 % Put extracted features into a structure
-featureData = extractClassicEMG(dataChTimeTr,extractedFeatureNames,[1 500],250);
+featureData = extractClassicEMG(dataChTimeTr,extractedFeatureNames,[1 1400],1400);
 
 numTWs = 2; %number of time windows (window size / bin size above)
 
@@ -77,7 +78,7 @@ numTWs = 2; %number of time windows (window size / bin size above)
 for tw = 1:numTWs
     figure
     pl=1;
-    for i = 1:50 %length(featureData.Properties.VariableNames)
+    for i = 1:length(featureData.Properties.VariableNames)
         %tempfeat = eval(strcat('featureData.',extractedFeatureNames{i},'(:,',num2str(tw),')'));
         subplot(5,10,pl)
         
@@ -94,7 +95,8 @@ try
     load("lastCVpartition.mat")
     disp("loading prior training-test partition")
     if cvtt.NumObservations ~= length(labels)
-        warning('Loaded cv partition does not match number of observations, delete or rename and rerun')
+        warning('Loaded cv partition does not match number of observations, delete or rename and rerun, making a temporary new one')
+        cvtt = cvpartition(labels,"HoldOut",.5);
     end
 catch
     cvtt = cvpartition(labels,"HoldOut",.5);
