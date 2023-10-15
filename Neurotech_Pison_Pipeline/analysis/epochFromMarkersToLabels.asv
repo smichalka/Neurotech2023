@@ -9,6 +9,23 @@ function [epochedData,gest_list] = epochFromMarkersToLabels(lsl_data,marker_data
 %   the same
 
 
+% Check to see if this is the old data (trial numbers instead of gesture)
+if max(marker_data(:,2)) > 5 % 5 is just something greater than 3 and less than num trials
+% Then markers are the trial numbers, so we need to add bad marker notes in
+% for repeats 
+    if (length(marker_data)/2) ~= length(gest_list) %If there are extra trials
+        md_notzero = marker_data(marker_data(:,2)~=0,2); % marker numbers (trial num)
+        repeat_trials = find(md_notzero==0);
+        
+
+
+
+    end
+
+end
+
+
+
 
 % Find all markers that indicate a rerecording and delete them
 bad_marker = 99; % This is the marker number to indicate the trial was re-recorded due to error

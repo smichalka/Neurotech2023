@@ -7,7 +7,7 @@ numCh = 4;
 epochedData =[];
 labels = [];
 % i is which folders you want to load from.
-for i = 1:6
+for i = 7:10
     % load the gesturelist and data
     load(strcat("../../../SSVEP/gestures/gest_",num2str(i),"/gestures.mat"));
     gest_data_name = dir(strcat("../../../SSVEP/gestures/gest_",num2str(i),"/lsl_data*.mat"));
