@@ -8,6 +8,10 @@ import scipy.io
 import time
 import sys
 
+def get_all_streams():
+        streams = resolve_stream()
+        return [stream.name() for stream in streams]
+
 class PyLSLWrapper:
     """
     Class to create PyLSL bindings callable from MATLAB to pull data from
@@ -60,27 +64,16 @@ class PyLSLWrapper:
         print(f'Searching for {self.device_name}')
         streams = resolve_stream()
         to_pull = None
-        print(streams)
         for stream in streams:
-            print(f'Pison Vulcan - {self.device_name} ADC')
-            # New devide name is SALUS
-            if stream.name() == f'Pison Vulcan - {self.device_name} ADC':
+            if stream.name() == self.device_name:
                 to_pull = stream
-                print('LSL Stream found!')
-            elif stream.name() == f'Pison SALUS - {self.device_name} ADC':
-                to_pull = stream
-                print('LSL Stream found!')
-            if stream.name() == f'Pison Vulcan - {self.device_name} IMU':
-                to_pull_IMU = stream
-            elif stream.name() == f'Pison SALUS - {self.device_name} IMU':
-                to_pull_IMU = stream
+                print(f'Connected to {self.device_name}')
         if not to_pull:
             raise Exception('Could not find the LSL stream')
         else:
             self.listener_thread = threading.Thread(target=self.pull_stream, args=(to_pull,self.lsl_data,1.0)) 
             self.run_thread = True
             self.listener_thread.start()
-            self.local_puller = StreamInlet(to_pull_IMU)
 
     def add_marker(self, marker):
         """
