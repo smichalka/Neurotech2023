@@ -13,7 +13,7 @@ The following are the dependencies for the Pison pipeline app:
 Note: if you have a conda installation of python, you may run into problems. Save yourself the hassle and just install another python and make sure that it's on your path.
 You can see if this is the case by typing:
 pyenv
-into matla
+into Matlab.
 
 ### Installing pylsl
 
@@ -30,13 +30,21 @@ pyversion('C:\Users\YOUR_USER_NAME\AppData\Local\Programs\Python\Python310\pytho
 or a path to wherever you installed this new python.
 You can check that this is correct from the Matlab command window by:
 !python -V
-Then, you can install pylsl from the same Matlab command window by:
+
+Then, you can install pylsl (and other dependencies) from the same Matlab command window by:
+In Neurotech_Pison_Pipeline/dataCollection/, run installPythonDeps
+
+Or if you need to do it step by step to find the source of an error, here's the code:
 !python -m pip install pylsl
 You may also need to install other dependencies for this version:
 !python -m pip install scipy
 !python -m pip install numpy
 
 More generally (and if you already have a non-default Windows python installed), you can install pylsl on windows, by simply running `pip install pylsl`. This will install the python package and all backend libraries needed. 
+
+Troubleshooting Windows:
+If you are having python problems, it could have to do with yoru path. Set your environmental variables in windows (type environmental variables)
+
 
 **Linux/MacOS**
 

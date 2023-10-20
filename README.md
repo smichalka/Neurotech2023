@@ -30,13 +30,22 @@ pyversion('C:\Users\YOUR_USER_NAME\AppData\Local\Programs\Python\Python310\pytho
 or a path to wherever you installed this new python.
 You can check that this is correct from the Matlab command window by:
 !python -V
-Then, you can install pylsl from the same Matlab command window by:
+
+Then, you can install pylsl (and other dependencies) from the same Matlab command window by:
+In Neurotech_Pison_Pipeline/dataCollection/, run installPythonDeps
+
+Or if you need to do it step by step to find the source of an error, here's the code:
 !python -m pip install pylsl
 You may also need to install other dependencies for this version:
 !python -m pip install scipy
 !python -m pip install numpy
 
 More generally (and if you already have a non-default Windows python installed), you can install pylsl on windows, by simply running `pip install pylsl`. This will install the python package and all backend libraries needed. 
+
+Troubleshooting Windows:
+If you are having python problems, it could have to do with yoru path. Set your environmental variables in windows (type environmental variables into search and put your python installations on the path) so your computer can find it.
+If you have everything running fine, but you can't detect the data stream from lsl, then the problem is probably a firewall thing. In the pythonLSLHelpers folder, run the file called print_and_get.py, either using pyrunfile("print_and_get.py") or !python print_and_get.py. Windows firewall stuff should pop up and allow this to get by the firewall. 
+
 
 **Linux/MacOS**
 
