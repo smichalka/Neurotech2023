@@ -1,27 +1,10 @@
-function [epochedData,gest_list] = epochFromMarkersToLabels(lsl_data,marker_data, numTPs, gest_list)
+function [epochedData,gest_list] = epochFromMarkersToLabels(lsl_data,marker_data, numTPs)
 %epochFromMarkersToLabels Turn continous data and LSL markers into data
 %with equal time windows
 %   lsl_data: raw recorded data
 %   marker_data: data with timestamps of markers and marker numer
 %   numTPs: how many timepoint to keep (length of signal to keep in points
 %   (not time)
-%   gest_list: list of the gestures (just use this to make sure lengths are
-%   the same
-
-
-% Check to see if this is the old data (trial numbers instead of gesture)
-if max(marker_data(:,2)) > 5 % 5 is just something greater than 3 and less than num trials
-% Then markers are the trial numbers, so we need to add bad marker notes in
-% for repeats 
-    if (length(marker_data)/2) ~= length(gest_list) %If there are extra trials
-        md_notzero = marker_data(marker_data(:,2)~=0,2); % marker numbers (trial num)
-        repeat_trials = 2 * find(diff(md_notzero)==0) - 1; 
-        repeat_trials = [repeat_trials; (repeat_trials+1)];
-        marker_data(repeat_trials,:) = []; % Remove repeat trials and the 0 marker after
-    end
-end
-
-
 
 
 % Find all markers that indicate a rerecording and delete them

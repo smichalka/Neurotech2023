@@ -15,13 +15,10 @@ if max(marker_data(:,2)) > 5 % 5 is just something greater than 3 and less than 
 % for repeats 
     if (length(marker_data)/2) ~= length(gest_list) %If there are extra trials
         md_notzero = marker_data(marker_data(:,2)~=0,2); % marker numbers (trial num)
-        repeat_trials = find(md_notzero==0);
-        
-
-
-
+        repeat_trials = 2 * find(diff(md_notzero)==0) - 1; 
+        repeat_trials = [repeat_trials; (repeat_trials+1)];
+        marker_data(repeat_trials,:) = []; % Remove repeat trials and the 0 marker after
     end
-
 end
 
 
@@ -50,6 +47,10 @@ end
 % Find the Marker onset for all non-zero markers
 start_times = marker_data(marker_data(:,2)~=0,1);
 
+% if gesture list doesn't exist (because gestures in marker_data
+if ~exist("gest_list","var")
+    gest_list = marker_data(marker_data(:,2)~=0,2);
+end
 
 % Check to make sure the number of markers matches the number of trials
 if length(start_times) ~= length(gest_list)
