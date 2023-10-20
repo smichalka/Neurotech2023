@@ -72,7 +72,7 @@ see a message like 'Connected to device'. From here, you can start recording!
 ### Processing Data
 After a session of data collection (30 gestures or however many you specify), you will have one important file named `lsl_data_<timestamp>.mat`. This should contain 3 variables: lsl_data, marker_data, and recording_info (coming soon!). The lsl_data file contains a first column of timestamps and then the four channels of EMG data (the last column should be all zeros, and you should ignore it). The marker_data file contains timestamps and markers for when each gesture started and ended (usually zeros, but sometimes 99 if you chose to re-record this trial... we will throw out the ones that go with the 99 markers).  For the markers, 1 is rock, 2 is paper, 3 is scissors.
 
-The process_data function takes in lsl_data and marker_data and returns an "epoched" and filtered form of this that is ready for analysis. As a sanity check, each gesture's lsl data should be about 1400 samples by 4 channels, as the sensor samples at 1000hz and each gesture lasts 1.4 seconds. The data are high pass filtered at 5Hz.
+The preprocessData() function takes in lsl_data and marker_data and returns an "epoched" and filtered form of this that is ready for analysis. As a sanity check, each gesture's lsl data should be about 1400 samples by 4 channels, as the sensor samples at 1000hz and each gesture lasts 1.4 seconds. The data are high pass filtered at 5Hz.
 
 ### Common issues
 
