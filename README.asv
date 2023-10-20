@@ -13,7 +13,7 @@ The following are the dependencies for the Pison pipeline app:
 Note: if you have a conda installation of python, you may run into problems. Save yourself the hassle and just install another python and make sure that it's on your path.
 You can see if this is the case by typing:
 pyenv
-into Matlab.
+into matla
 
 ### Installing pylsl
 
