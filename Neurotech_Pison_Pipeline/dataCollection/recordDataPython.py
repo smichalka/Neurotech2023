@@ -102,7 +102,7 @@ while i < len(gestures):
             time.sleep(1)
             print('1\r')
             time.sleep(.5)
-            wrapper.add_marker(0)
+            wrapper.add_marker(gesture)
             time.sleep(.5)
             print('Shoot!')
             time.sleep(1)
