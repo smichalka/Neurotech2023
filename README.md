@@ -9,6 +9,7 @@ The following are the dependencies for the Pison pipeline app:
 3. scipy.io (install with `pip install scipy` or `conda install scipy` if using a conda environment)
 4. pylsl
 
+**All dependencies can be installed by running the installPythonDeps script in the dataCollection folder**
 
 Note: if you have a conda installation of python, you may run into problems. Save yourself the hassle and just install another python and make sure that it's on your path.
 You can see if this is the case by typing:
