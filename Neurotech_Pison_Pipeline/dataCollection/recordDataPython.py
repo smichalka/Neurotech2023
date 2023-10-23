@@ -8,17 +8,19 @@ import os
 import time
 import numpy as np
 
-clear = lambda : os.system('tput reset')
+clear = lambda : os.system('cls' if os.name == 'nt' else 'clear')
 pressed_key = None
 key_press_event = threading.Event()
+lsl = None
 
 def key_action(key_char):
     global pressed_key
     pressed_key = key_char
     if pressed_key == 'q':
-        print('Exiting program')
+        print('Quitting stuff program')
         key_press_event.set()
         sys.exit(0)
+        print('still here...')
     key_press_event.set()
 
 def on_press(key):
@@ -30,18 +32,19 @@ def on_press(key):
 
 def on_release(key):
     # Exit the listener and the while loop when the 'esc' key is pressed
-    if key == keyboard.Key.esc:
-        global keep_running
-        keep_running = False
-        return False
+    try:
+        key_char = key.char
+        if key_char == 'q':
+            return False
+    except:
+       pass
 
-# This function will run the key listener in a separate thread
-def listen_to_keyboard():
-    with keyboard.Listener(on_press=on_press, on_release=on_release) as listener:
-        listener.join()
+def quit():
+    return False
+
 
 # Start the key listener thread
-listener_thread = threading.Thread(target=listen_to_keyboard)
+listener_thread = keyboard.Listener(on_press=on_press, on_release=on_release)
 listener_thread.start()
 
 clear()
@@ -51,7 +54,7 @@ while not stream_name:
     streams = resolve_stream()
     clear()
     for i, stream in enumerate(streams):
-        print(f"{i}: {stream.name()}")
+        print(f"\033[1m{i}: {stream.name()}\033[0m")
     print('Which stream? (r) to reload list of available/ (q) to quit')
     key_press_event.wait()
     if pressed_key:
@@ -90,6 +93,7 @@ while i < len(gestures):
     key_press_event.wait()
     if pressed_key:
         pressed = pressed_key.strip()
+        print(pressed)
         if pressed == 'r':
             tstamp = time.time()
             print('3\r')
@@ -103,8 +107,7 @@ while i < len(gestures):
             print('Shoot!')
             time.sleep(1)
         elif pressed == 'q':
-            print('Quitting')
-            sys.exit(0)
+            break
     key_press_event.clear()
     print('(n) next gesture / (r) re-record / (q) quit')
     key_press_event.wait()
@@ -112,14 +115,19 @@ while i < len(gestures):
         pressed = pressed_key.strip()
         if pressed == 'r':
             print('Re-recording gesture')
+            wrapper.edit_last_marker()
             continue
         elif pressed == 'q':
-            print('quitting')
-            sys.exit(0)
+            break
         elif pressed == 'n':
             print('Moving to next gesture!')
             i += 1
 
 print('Finished the gestures!')
+print('set!')
+if wrapper:
+    wrapper.end_stream_listener()
+key_press_event.clear()
+listener_thread.stop()
 listener_thread.join()
-
+sys.exit(0)
