@@ -7,6 +7,8 @@ function [epochedData,gest_list] = epochFromMarkersToLabels(lsl_data,marker_data
 %   (not time)
 
 
+
+
 % Find all markers that indicate a rerecording and delete them
 bad_marker = 99; % This is the marker number to indicate the trial was re-recorded due to error
 % This is list of any markers that indicate a bad marker
@@ -14,9 +16,20 @@ idx_bad_markers = find(marker_data(:,2)==bad_marker);
 
 % If there are bad markers
 if size(idx_bad_markers,1) > 0
-    % Make list to include this index and the prior index (where the actual
-    % trial starts)
-    idx_bad_markers = [idx_bad_markers; (idx_bad_markers-1)];
+
+
+    % If there is a zero sent after each trial (matlab version)
+  
+    if sum(marker_data(:,2)==0) >0
+
+        %Then we need to eliminate the marker and 0 marker before
+        % Make list to include this index and the prior index (where the actual
+        % trial starts)
+        idx_bad_markers = [idx_bad_markers; (idx_bad_markers-1)];
+    end
+    % Otherwise, you can just eliminate the bad markers.
+
+
     if min(idx_bad_markers) < 1
         warning('Getting bad marker as first marker. Look at data for dropped markers')
         idx_bad_markers(idx_bad_markers<=0) = 1; % 
