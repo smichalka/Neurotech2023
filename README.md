@@ -5,20 +5,17 @@ Neurotechnology, Brains and Machines at Olin College of Engineering
 
 The following are the dependencies for the Pison pipeline app:
 1. MATLAB (with app designer available)
-2. Python 3.5 or > (tested with Python 3.9 but should have no issues with a few versions earlier/later)
-3. scipy.io (install with `pip install scipy` or `conda install scipy` if using a conda environment)
-4. pylsl
-
-**All dependencies can be installed by running the installPythonDeps script in the dataCollection folder**
+2. Python 3.9 or > (check [this](https://www.mathworks.com/support/requirements/python-compatibility.html) site to see what version of python is compatible with your MATLAB.)
+3. Scipy, numpy, pylsl (install with the `installPythonDeps` script in the `dataCollection` folder
 
 Note: if you have a conda installation of python, you may run into problems. Save yourself the hassle and just install another python and make sure that it's on your path.
 You can see if this is the case by typing:
 pyenv
 into Matlab.
 
-### Installing pylsl
+### Installing lsl
 
-PyLSL is the communication protocol used to stream data from the device to the computer. Installing pylsl differs based on platform.
+LSL is the communication protocol used to stream data from the device to the computer. Installing lsl and its python bindings differs based on platform.
 
 **Windows**
 
@@ -27,7 +24,7 @@ You'll also need version 3.9, 3.10, or 3.11 of python that is not the Windows de
 You'll need to make sure that this version of python is on your path above other version of python. You can do this by opening up the environmental variables in windows (type it into the search). Click on the button to edit them. Select the systems (or personal) PATH variable and edit it. Add two new paths:one to wherever python is installed and one to that installation folder followed by \Scripts\
 
 Then you may also need to set your python version in matlab:
-pyversion('C:\Users\YOUR_USER_NAME\AppData\Local\Programs\Python\Python310\python.exe')
+`pyversion('C:\Users\YOUR_USER_NAME\AppData\Local\Programs\Python\Python310\python.exe')` or `pyenv(Version='C:\Users\YOUR_USER_NAME\AppData\Local\Programs\Python\Python310\python.exe')`
 or a path to wherever you installed this new python.
 You can check that this is correct from the Matlab command window by:
 !python -V
@@ -67,11 +64,14 @@ Install the package with `sudo dpkg -i <name of the deb file you downloaded>` fr
 
 To install on other linux platforms (non ubuntu-based), you can [build from source](https://labstreaminglayer.readthedocs.io/dev/lib_dev.html).
 
+NOTE that for some reason, on Ubuntu the library doesn't seem to call correctly in Matlab. If you get some error about lsl library versions being wrong, switch over to the python collection script.
+
 ## Using the Data Collection App
 
-To use the data collection app, clone the repository. From the `Neurotech_Pison_Pipeline` folder, run `recorddata` in the MATLAB command line.
+To use the data collection app, clone the repository. From the `Neurotech_Pison_Pipeline` folder, run `recordData` in the MATLAB command line.
 This should start up the data collection app, which looks like the following:
-<img width="639" alt="Image of the neurotech pison data collection app" src="https://github.com/smichalka/Neurotech2023/assets/30906272/ba820a2f-311f-4f40-a50b-417231930335">
+<img width="641" alt="√" src="https://github.com/smichalka/Neurotech2023/assets/30906272/bc4b8f5c-f30e-4e8a-883e-4a84252ab323">
+
 
 On the Pison phone, open the `vulcan_flutter` app and turn on the Vulcan (turn on is two short vibrations and one long vibration, turn off is one long vibration then two short vibrations). 
 From the flutter app on the phone, go to the 'Devices' tab, and you should see the device show up. Click the name of the device to connect. You'll know that you connect because the Pison wristband
@@ -82,8 +82,9 @@ To make sure that everything connected properly, go back to the 'Realtime' tab a
 see a loading animation, the device likely has not connected properly. I honestly haven't figured out exactly how to fix this, but some combination of fully exiting matlab, force quitting
 the flutter app, and restarting the Pison phone can fix this (you may just have to wait for a few minutes for it to get fixed).
 
-Once the device is properly connected, type the device name into the app (just the number, so in the example from above the device name is 50A0A170). Once you hit connect, you should
-see a message like 'Connected to device'. From here, you can start recording!
+Once the device is properly connected, check the dropdown list on the app. If you hit refresh, you should see two streams show up that match the name of your device, one is IMU and one is ADC. ADC contains the actual EMG data, while IMU is accelerometer/gyroscope data. Once you select from the dropdown hit connect and you should be good to go!
+
+*on windows if you don't see the same device, make sure you are on the same wifi network and check MATLAB firewall settings*.
 
 ### Processing Data
 After a session of data collection (30 gestures or however many you specify), you will have one important file named `lsl_data_<timestamp>.mat`. This should contain 3 variables: lsl_data, marker_data, and recording_info (coming soon!). The lsl_data file contains a first column of timestamps and then the four channels of EMG data (the last column should be all zeros, and you should ignore it). The marker_data file contains timestamps and markers for when each gesture started and ended (usually zeros, but sometimes 99 if you chose to re-record this trial... we will throw out the ones that go with the 99 markers).  For the markers, 1 is rock, 2 is paper, 3 is scissors.
