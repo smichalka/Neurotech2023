@@ -1,6 +1,6 @@
 function [epochedData,gest_list] = epochFromMarkersToLabels(lsl_data,marker_data, numTPs)
 %epochFromMarkersToLabels Turn continous data and LSL markers into data
-%with equal time windows
+%with equal time windows.  Sam Michalka 2023
 %   lsl_data: raw recorded data
 %   marker_data: data with timestamps of markers and marker numer
 %   numTPs: how many timepoint to keep (length of signal to keep in points
@@ -52,7 +52,7 @@ end
 if length(start_times) ~= length(gest_list)
     input("Number of markers does not match the gest_list. Please look at start_times code.")
 end
-    
+
 % Empty data: channels x timepoints x trials
 epochedData = zeros(4,numTPs,length(start_times));
 % Find the closest data start to the timepoint
@@ -61,8 +61,22 @@ for i = 1:length(start_times)
     % time
     [~, idx ] = min(abs(lsl_data(:,1)-start_times(i)));
 
-    % For each trial, add to the epoched data
-    epochedData(:,:,i) = lsl_data(idx:(idx+numTPs-1),2:5)';
+    % Check to see if the index is not too close to the end
+    if (idx+numTPs-1) <= size(lsl_data,1)
+        % For each trial, add to the epoched data
+        epochedData(:,:,i) = lsl_data(idx:(idx+numTPs-1),2:5)';
+    else
+        % If it is too close to the end, you have to stop here.
+        warning("Not enough datapoints in lsl_data relative to start_times + numTPs. Some trials removed.")
+        idx
+        numTPs
+        size(lsl_data,1)
+        % Then get rid of the extra trials in epochedData and break out of
+        % this loop
+        epochedData(:,:,i:end) = [];
+        warning(strcat("Epoched data now has ",num2str(i)," trials, with ", num2str(size(start_times,1))," originally."));
+        break
+    end
 end
 
 end
