@@ -74,6 +74,7 @@ for i = 1:length(start_times)
         % Then get rid of the extra trials in epochedData and break out of
         % this loop
         epochedData(:,:,i:end) = [];
+        gest_list(i:end)= [];
         warning(strcat("Epoched data now has ",num2str(i)," trials, with ", num2str(size(start_times,1))," originally."));
         break
     end
