@@ -8,9 +8,16 @@ import os
 import time
 import numpy as np
 import atexit
+import argparse
+try:
+    import matlab.engine
+except ImportError:
+    print('Matlab engine not found. Please install matlab engine for python')
+    sys.exit(0)
 
-def get_rps(data):
-    return 1
+def get_rps(data, eng, matlab_pth):
+    else:
+        # if we don't have a matlab engine, use a python model
 
 """
 Helper functions, don't worry about these!
@@ -59,13 +66,31 @@ def exit_program():
 atexit.register(exit_program)
 
 if __name__=='__main__':
+    # Figure out if we are using matlab engine or python engine
+    parser = argparse.ArgumentParser(
+        prog='testDataPython',
+        description='Run the data testing ')
+    parser.add_argument('--matlabmodel', help='Location of the runModel.m file', default='runModel.m')
+    args = parser.parse_args()
+    if args.matlabmodel:
+        eng = matlab.engine.start_matlab()
+        # if we have a matlab engine and want to use a matlab model, import it
+        pth = os.path.dirname(matlab_pth)
+        eng.addpath(pth)
+        runModel = lambda data: eng.runModel(data)
+    else:
+        dir_path = os.path.dirname(os.path.realpath(__file__))
+        sys.path.append(dir_path)
+        from runPythonModel import get_rps
+        runModel = lambda data: get_rps(data)
+
     # Start the key listener thread
     listener_thread = keyboard.Listener(on_press=on_press, on_release=on_release)
     listener_thread.start()
     clear()
-    recv_name = None
+    recv = None
 
-    # Pick the marker stream to govern
+    # Pick the marker stream to tell the program when to collect data
     marker_streams = get_all_streams()
     for stream in marker_streams:
         if stream.name() == 'marker_send':
@@ -76,7 +101,8 @@ if __name__=='__main__':
         print('No marker stream found. Make sure there is a computer with a marker stream running')
         sys.exit(0)
     clear() 
-    # Start the LSL Wrapper for the wristband
+
+    # Find the wristband stream
     stream_name = None
     while not stream_name:
         key_press_event.clear()
@@ -102,6 +128,8 @@ if __name__=='__main__':
                     clear()
                 except:
                     print('Please enter a valid int listed')
+
+    # Start the stream listener and data collection
     wrapper = PyLSLWrapper(stream_name)
     wrapper.launch_stream_listener()
     while True:
@@ -119,5 +147,7 @@ if __name__=='__main__':
             print('Shoot!')
             time.sleep(2)
             data = wrapper.get_data_from(tstamp_start)
+            inference = runModel(data)
+            inferred_out.push_sample([inference])
         elif marker==99:
             sys.exit(0)
