@@ -39,6 +39,7 @@ if __name__=='__main__':
         prog='testDataPython',
         description='Run the data testing ')
     parser.add_argument('--matlabmodel', help='Location of the runModel.m file')
+    parser.add_argument('--online', help="Whether to run for head to head battle")
     args = parser.parse_args()
     print(args.matlabmodel)
     if args.matlabmodel:
@@ -46,8 +47,9 @@ if __name__=='__main__':
         # if we have a matlab engine and want to use a matlab model, import it
         pth = os.path.dirname(args.matlabmodel)
         eng.addpath(pth)
-        runModel = lambda data: eng.runModel(data)
+        runModel = lambda data: eng.runMatlabModel(data)
     else:
+        print('no matlab')
         dir_path = os.path.dirname(os.path.realpath(__file__))
         sys.path.append(dir_path)
         from runPythonModel import get_rps
@@ -86,21 +88,28 @@ if __name__=='__main__':
     inferred_markers = StreamInfo(f'inferred {stream_name}', 'markers', 1, 0)
     inferred_out = StreamOutlet(inferred_markers)
     # Watch for the marker stream and create the inference stream 
-    _ = input("Press enter when the marker thread has been launched")
-    marker_streams = resolve_stream()
-    for stream in marker_streams:
-        if stream.name() == 'marker_send':
-            recv = StreamInlet(stream)
-            print('Found marker stream')
-    if not recv:
-        print('No marker stream found. Make sure there is a computer with a marker stream running')
-        sys.exit(0)
-    clear() 
+    if args.online:
+        _ = input("Press enter when the marker thread has been launched")
+        marker_streams = resolve_stream()
+        for stream in marker_streams:
+            if stream.name() == 'marker_send':
+                recv = StreamInlet(stream)
+                print('Found marker stream')
+        if not recv:
+            print('No marker stream found. Make sure there is a computer with a marker stream running')
+            sys.exit(0)
+        clear() 
 
     while True:
-        print('got here!')
-        marker, timestamp = recv.pull_sample()
-        print(marker)
+        if args.online:
+            marker, timestamp = recv.pull_sample()
+        else:
+            inp = input('Press enter to record for inference, q+enter to quit!')
+            if inp == '':
+                marker = [1]
+            elif inp == 'q':
+                exit_program()
+                sys.exit(0)
         if marker[0] == 1:
             tstamp = time.time()
             print('3\r')
@@ -115,7 +124,7 @@ if __name__=='__main__':
             time.sleep(2)
             data = wrapper.get_data_from(tstamp_start)
             inference = runModel(data)
-            inferred_out.push_sample([1.0])
-            print(f'pushed {inference}')
+            inferred_out.push_sample([inference])
+            print(f'Inference: {inference}')
         elif marker==99:
             sys.exit(0)
