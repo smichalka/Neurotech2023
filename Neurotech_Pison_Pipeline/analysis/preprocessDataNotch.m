@@ -1,4 +1,4 @@
-function [epochedData,gesturelist] = preprocessData(lsl_data,marker_data)
+function [epochedData,gesturelist] = preprocessDataNotch(lsl_data,marker_data)
 %preprocessData Filter and epoch the data
 %   
 
