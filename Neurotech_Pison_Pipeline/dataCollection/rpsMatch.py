@@ -152,5 +152,6 @@ if __name__=='__main__':
                         pts_player1 += 1
             elif pressed == 'q':
                 sys.exit(0)
+            clear()
     print(f'Player {1 if pts_player1 > pts_player2 else 2} wins!')
     print(f'Final score: Player 1: {pts_player1} | Player 2: {pts_player2}')

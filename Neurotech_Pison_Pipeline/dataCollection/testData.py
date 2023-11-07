@@ -9,10 +9,10 @@ import time
 import numpy as np
 import atexit
 import argparse
+
 """
 Helper functions, don't worry about these!
 """
-
 clear = lambda : os.system('cls' if os.name == 'nt' else 'clear')
 wrapper = None
 
@@ -52,8 +52,9 @@ if __name__=='__main__':
         print('no matlab')
         dir_path = os.path.dirname(args.pythonmodel)
         sys.path.append(dir_path)
-        from runPythonModel import get_rps
-        runModel = lambda data: get_rps(data)
+        from runPythonModel import RunPythonModel 
+        pml = RunPythonModel(args.pythonmodel)
+        runModel = lambda data: pml.get_rps(data)
 
     recv = None
     clear()

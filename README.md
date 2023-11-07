@@ -106,6 +106,12 @@ the data (eg. importing your classifier, etc.).
 To call this with your model, go to the `dataCollection` folder in the Neurotech folder. If you're using a MATLAB classifier, call `python3 testData.py --matlabmodel <path/to/runMatlabModel.m>`.
 If you're using a Python classifier, call `python3 testData.py --pythonmodel <path/to/runPythonModel.py>`.
 
+### Live Battles
+
+To set up your classifier for online battle, add the `--online` flag to your testData call (for example, `python3 testData --online --matlabmodel runMatlabModel.m`).
+
+Once you do this, you'll see the same screen as before where it asks you what stream to connect to. Once you do this, you'll see a window that says 'Press enter when the marker thread is launched'. At this point, wait for the person running rpsMatch to set up and connect to the two players. On another computer, run `rpsMatch.py`. Once both players launch their testData files, there should be two streams that start with 'inferred' with the name of each player's device. Connect to both from the `rpsMatch.py` file and then hit enter on both players' computers. At this point, whoever controls the `rpsMatch` computer can click 'r' to trigger both player laptops, and you should be good to go! 
+
 ### Common issues
 
 There is a log area for any errors that Python throws. Note that this doesn't auto clear, so it may be showing an earlier error. Pretty much all errors that show up
