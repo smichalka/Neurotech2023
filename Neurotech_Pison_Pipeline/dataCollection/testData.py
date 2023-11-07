@@ -9,15 +9,10 @@ import time
 import numpy as np
 import atexit
 import argparse
-try:
-    import matlab.engine
-except ImportError:
-    print('Matlab engine not found. Please install matlab engine for python')
-    sys.exit(0)
-
 """
 Helper functions, don't worry about these!
 """
+
 clear = lambda : os.system('cls' if os.name == 'nt' else 'clear')
 wrapper = None
 
@@ -39,10 +34,15 @@ if __name__=='__main__':
         prog='testDataPython',
         description='Run the data testing ')
     parser.add_argument('--matlabmodel', help='Location of the runModel.m file')
-    parser.add_argument('--online', help="Whether to run for head to head battle")
+    parser.add_argument('--pythonmodel', help='Location of the runModel.py file')
+    parser.add_argument('--online', action='store_true', help="Whether to run for head to head battle")
     args = parser.parse_args()
-    print(args.matlabmodel)
+    assert args.matlabmodel or args.pythonmodel, 'Please specify a model to run'
     if args.matlabmodel:
+        try:
+            import matlab.engine
+        except ImportError:
+            print('Matlab engine not found. If using MATLAB, please install matlab engine for python')
         eng = matlab.engine.start_matlab()
         # if we have a matlab engine and want to use a matlab model, import it
         pth = os.path.dirname(args.matlabmodel)
@@ -50,7 +50,7 @@ if __name__=='__main__':
         runModel = lambda data: eng.runMatlabModel(data)
     else:
         print('no matlab')
-        dir_path = os.path.dirname(os.path.realpath(__file__))
+        dir_path = os.path.dirname(args.pythonmodel)
         sys.path.append(dir_path)
         from runPythonModel import get_rps
         runModel = lambda data: get_rps(data)
