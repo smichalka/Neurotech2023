@@ -91,6 +91,21 @@ After a session of data collection (30 gestures or however many you specify), yo
 
 The preprocessData() function takes in lsl_data and marker_data and returns an "epoched" and filtered form of this that is ready for analysis. As a sanity check, each gesture's lsl data should be about 1400 samples by 4 channels, as the sensor samples at 1000hz and each gesture lasts 1.4 seconds. The data are high pass filtered at 5Hz.
 
+## Testing Data
+
+To test data live, you can use the `testData.py` file in the dataCollection folder. This file works similarly to the python data collection scripts, where you find
+a stream through the command line, select it, and go ahead with data collection. 
+
+**Linking your classifier**
+In the `dataCollection` folder, there are two files: `runMatlabModel.m` and `runPythonModel.py`. These files contain starter code for functions that you can put your
+inference code in (use the .m file if you're working in MATLAB, use the .py file if you're using Python). These functions take in a data matrix, which is the same as
+the data matrix you get for every gesture from the data collection procedure. In these functions, add whatever code you need to get a rock-paper-scissors value from
+the data (eg. importing your classifier, etc.). 
+
+**Calling with your classifier**
+To call this with your model, go to the `dataCollection` folder in the Neurotech folder. If you're using a MATLAB classifier, call `python3 testData.py --matlabmodel <path/to/runMatlabModel.m>`.
+If you're using a Python classifier, call `python3 testData.py --pythonmodel <path/to/runPythonModel.py>`.
+
 ### Common issues
 
 There is a log area for any errors that Python throws. Note that this doesn't auto clear, so it may be showing an earlier error. Pretty much all errors that show up
