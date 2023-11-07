@@ -9,10 +9,10 @@ import time
 import numpy as np
 import atexit
 import argparse
+
 """
 Helper functions, don't worry about these!
 """
-
 clear = lambda : os.system('cls' if os.name == 'nt' else 'clear')
 wrapper = None
 
