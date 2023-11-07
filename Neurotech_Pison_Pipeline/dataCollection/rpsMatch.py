@@ -8,6 +8,7 @@ import sys
 """
 Helper functions
 """
+MAPPING = {1: 'Rock', 2: 'Paper', 3: 'Scissors'}
 clear = lambda : os.system('cls' if os.name == 'nt' else 'clear')
 pressed_key = None
 key_press_event = threading.Event()
@@ -125,6 +126,7 @@ if __name__=='__main__':
                 player2_response, timestamp = player2_inlet.pull_sample()
                 player1_response = player1_response[0]
                 player2_response = player2_response[0]
+                print(f'Player 1: {MAPPING[player1_response]}, Player 2: {player2_response}')
                 if player1_response == player2_response:
                     print('Tie!')
                 elif player1_response == 1:
