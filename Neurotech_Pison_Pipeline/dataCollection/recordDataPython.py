@@ -146,4 +146,6 @@ if __name__=='__main__':
                 else:
                     clear()
                     print('Please enter a valid key!')
+    print('Done recording!')
+    exit_program()
 
