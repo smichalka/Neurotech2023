@@ -11,6 +11,7 @@ end
 
 feats = extractFeaturesExample(data',1:4,1000);
 
+% This is your classifier (currentClassifier, or whatever you named it)
 mymodel = load('simpleVarLDA.mat');
 
 % You might want to confirm that mymodel.PredictorNames matches the feature
