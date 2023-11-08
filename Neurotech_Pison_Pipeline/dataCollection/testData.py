@@ -20,7 +20,7 @@ def exit_program():
     print('Finished the gestures!')
     print('set!')
     if wrapper:
-        wrapper.end_stream_listener()
+        wrapper.end_stream_listener(save_file=False)
     sys.exit(0)
 
 atexit.register(exit_program)

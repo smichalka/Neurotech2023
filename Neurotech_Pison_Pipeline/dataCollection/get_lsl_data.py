@@ -107,7 +107,7 @@ class PyLSLWrapper:
         np_lsl_data = np.asarray(self.lsl_data)
         return np_lsl_data[np_lsl_data[:,0] > start_time]
 
-    def end_stream_listener(self):
+    def end_stream_listener(self, save_file=True):
         """
         End the LSL Stream
         """
@@ -115,7 +115,8 @@ class PyLSLWrapper:
         self.run_thread = False
         self.listener_thread.join()
         print('Listener stopped!')
-        scipy.io.savemat(f'lsl_data_{time.strftime("%Y-%m-%d-%H-%M-%S")}.mat',
-                         mdict={'lsl_data':self.lsl_data, 'marker_data':self.marker_data})
-        print(len(self.lsl_data))
+        if save_file:
+            scipy.io.savemat(f'lsl_data_{time.strftime("%Y-%m-%d-%H-%M-%S")}.mat',
+                            mdict={'lsl_data':self.lsl_data, 'marker_data':self.marker_data})
+            print(len(self.lsl_data))
 
