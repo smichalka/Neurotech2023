@@ -91,7 +91,7 @@ After a session of data collection (30 gestures or however many you specify), yo
 
 The preprocessData() function takes in lsl_data and marker_data and returns an "epoched" and filtered form of this that is ready for analysis. As a sanity check, each gesture's lsl data should be about 1400 samples by 4 channels, as the sensor samples at 1000hz and each gesture lasts 1.4 seconds. The data are high pass filtered at 5Hz.
 
-## Testing Data
+## Online / Live Classification (Testing Data)
 
 To test data live, you can use the `testData.py` file in the dataCollection folder. This file works similarly to the python data collection scripts, where you find
 a stream through the command line, select it, and go ahead with data collection. 
