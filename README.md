@@ -101,6 +101,8 @@ In the `dataCollection` folder, there are two files: `runMatlabModel.m` and `run
 inference code in (use the .m file if you're working in MATLAB, use the .py file if you're using Python). These functions take in a data matrix, which is the same as
 the data matrix you get for every gesture from the data collection procedure. In these functions, add whatever code you need to get a rock-paper-scissors value from
 the data (eg. importing your classifier, etc.). 
+If you use matlab, you will need to install matlab engine in python.
+python3 -m pip install matlabengine 
 
 **Calling with your classifier**
 To call this with your model, go to the `dataCollection` folder in the Neurotech folder. If you're using a MATLAB classifier, call `python3 testData.py --matlabmodel <path/to/runMatlabModel.m>`.
