@@ -7,6 +7,7 @@ The following are the dependencies for the Pison pipeline app:
 1. MATLAB (with app designer available)
 2. Python 3.9 or > (check [this](https://www.mathworks.com/support/requirements/python-compatibility.html) site to see what version of python is compatible with your MATLAB.)
 3. Scipy, numpy, pylsl (install with the `installPythonDeps` script in the `dataCollection` folder
+4. pynput for the python scripts (install with `pip install pynput` or `py -m pip install pynput`
 
 Note: if you have a conda installation of python, you may run into problems. Save yourself the hassle and just install another python and make sure that it's on your path.
 You can see if this is the case by typing:
@@ -101,10 +102,14 @@ In the `dataCollection` folder, there are two files: `runMatlabModel.m` and `run
 inference code in (use the .m file if you're working in MATLAB, use the .py file if you're using Python). These functions take in a data matrix, which is the same as
 the data matrix you get for every gesture from the data collection procedure. In these functions, add whatever code you need to get a rock-paper-scissors value from
 the data (eg. importing your classifier, etc.). 
+If you use matlab, you will need to install matlab engine in python.
+python3 -m pip install matlabengine 
 
 **Calling with your classifier**
 To call this with your model, go to the `dataCollection` folder in the Neurotech folder. If you're using a MATLAB classifier, call `python3 testData.py --matlabmodel <path/to/runMatlabModel.m>`.
 If you're using a Python classifier, call `python3 testData.py --pythonmodel <path/to/runPythonModel.py>`.
+
+**If you're on windows** you may have to replace `python3` with `py` since Windows seems to alias python to that name 🙃
 
 ### Live Battles
 
