@@ -122,7 +122,7 @@ if __name__=='__main__':
             tstamp_start = wrapper.get_curr_timestamp()
             time.sleep(.5)
             print('Shoot!')
-            time.sleep(2)
+            time.sleep(1.6)
             data = wrapper.get_data_from(tstamp_start)
             #print(np.shape(data[0:1400,:]))
             inference = runModel(data[0:1400,:])
