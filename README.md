@@ -106,7 +106,8 @@ If you use matlab, you will need to install matlab engine in python.
 python3 -m pip install matlabengine 
 
 **Calling with your classifier**
-To call this with your model, go to the `dataCollection` folder in the Neurotech folder. If you're using a MATLAB classifier, call `python3 testData.py --matlabmodel <path/to/runMatlabModel.m>`.
+To call this with your model, go to the `dataCollection` folder in the Neurotech folder. If you're using a MATLAB classifier, call `python3 testData.py --matlabmodel <path/to/runMatlabModel.m>`. For MATLAB, make sure the file and function are named 'runMatlabModel.m' and delete the placeholder 'runMatlabModel.m' file in the dataCollection older.
+
 If you're using a Python classifier, call `python3 testData.py --pythonmodel <path/to/runPythonModel.py>`.
 
 **If you're on windows** you may have to replace `python3` with `py` since Windows seems to alias python to that name 🙃
