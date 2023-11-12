@@ -6,6 +6,9 @@ function res = runMatlabModel(data)
     % and return rock, paper, and scissors, based on what your model
     % predicts. 
     %%%
-    disp(data)
+    
+    
+    disp(data);
     res = 2;
+
 end

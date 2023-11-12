@@ -46,7 +46,11 @@ if __name__=='__main__':
         eng = matlab.engine.start_matlab()
         # if we have a matlab engine and want to use a matlab model, import it
         pth = os.path.dirname(args.matlabmodel)
+        print('code will look in the local folder and then here: ')
+        print(pth)
+        print('Make sure your model is called runMatlabModel.m and there is no runMatlabModel.m in the same folder as testData.py')
         eng.addpath(pth)
+        print('running matlab model')
         runModel = lambda data: eng.runMatlabModel(data)
     else:
         print('no matlab')
