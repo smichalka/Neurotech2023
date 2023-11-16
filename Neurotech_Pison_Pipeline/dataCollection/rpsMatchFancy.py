@@ -157,14 +157,18 @@ if __name__=='__main__':
                 player1_response, timestamp = player1_inlet.pull_sample()
                 player2_response, timestamp = player2_inlet.pull_sample()
                 player1_response = player1_response[0]
-                player2_response = player2_response[0]
+                player2_response = player2_response[0] 
+                print(player1_response)
+                print(player2_response)
                 print(f'Player 1: {MAPPING[player1_response]}, Player 2: {player2_response}')
                 player1_img = choose_image(player1_response,rockImg,paperImg,scissorsImg,failImg)
                 player2_img = choose_image(player2_response,rockImg,paperImg,scissorsImg,failImg)
                 gameDisplay.blit(player1_img,(200,200))
                 
                 gameDisplay.blit(player1_img,(600,200))
+                pygame.wait(1.0)
                 pygame.display.update()
+                pygame.wait(1.0)
                 
                 if player1_response == player2_response:
                     print('Tie!')

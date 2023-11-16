@@ -126,6 +126,9 @@ if __name__=='__main__':
                 player2_response, timestamp = player2_inlet.pull_sample()
                 player1_response = player1_response[0]
                 player2_response = player2_response[0]
+                print(player1_response)
+                print(player2_response)
+                print(timestamp)
                 print(f'Player 1: {MAPPING[player1_response]}, Player 2: {player2_response}')
                 if player1_response == player2_response:
                     print('Tie!')
